@@ -1,0 +1,135 @@
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100vh;
+  height: 100dvh;
+  padding: 20px 12px;
+  overflow-y: auto;
+  border-right: 1px solid var(--hairline);
+  background: var(--surface);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  font-family: var(--font-rounded);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.brand img {
+  border-radius: 8px;
+}
+
+.add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.add svg {
+  width: 18px;
+  height: 18px;
+}
+
+.add .kbd {
+  color: inherit;
+  opacity: 0.7;
+}
+
+.group {
+  display: grid;
+  gap: 2px;
+}
+
+/* Служебные действия прижаты к низу панели, разделы — к верху. */
+.group:last-child {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--separator);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: var(--label);
+  font-size: 0.9375rem;
+  text-align: left;
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s var(--ease-out);
+}
+
+.item svg {
+  width: 20px;
+  height: 20px;
+  color: var(--label-secondary);
+}
+
+.item:hover:not(:disabled) {
+  background: var(--fill);
+}
+
+.item:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.item:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.item[aria-current='page'] {
+  background: var(--accent-tint);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.item[aria-current='page'] svg {
+  color: var(--accent-text);
+}
+
+.item[data-destructive] {
+  color: var(--text-red);
+}
+
+.item[data-destructive] svg {
+  color: var(--text-red);
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kbd {
+  font-family: inherit;
+  font-size: 0.6875rem;
+  color: var(--label-tertiary);
+}
+
+.badge {
+  min-width: 22px;
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--red);
+  color: var(--on-red);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+}

@@ -6,3 +6,46 @@
   padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(112px + env(safe-area-inset-bottom, 0px))
     max(16px, env(safe-area-inset-left, 0px));
 }
+
+.overview {
+  display: grid;
+  gap: 24px;
+}
+
+/* ПК и широкое окно: боковое меню слева, рабочая область справа. */
+.shell[data-wide] {
+  --sticky-top: 16px;
+  display: grid;
+  grid-template-columns: 264px minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.shell[data-wide] .main {
+  align-content: start;
+  width: 100%;
+  max-width: 1200px;
+  padding: 32px 40px 48px;
+}
+
+/* Сводка и ближайший платёж — рядом, если хватает места. */
+.shell[data-wide] .overview {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: stretch;
+}
+
+.shell[data-wide] .overview > * {
+  height: 100%;
+}
+
+.shell[data-wide] .main[data-tab='empty'] {
+  align-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+@media (min-width: 1440px) {
+  .shell[data-wide] {
+    grid-template-columns: 272px minmax(0, 1fr);
+  }
+}

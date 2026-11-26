@@ -22,7 +22,9 @@ window.addEventListener(
 )
 
 // Service worker кэширует приложение: после установки на экран «Домой» оно открывается без сети.
-registerSW({ immediate: true })
+// В программе для ПК файлы и так лежат на диске, а service worker в Electron ломает
+// перезагрузку окна. Поэтому он нужен только в браузере и на телефоне.
+if (!navigator.userAgent.includes('Electron/')) registerSW({ immediate: true })
 
 // Просим браузер не вытеснять localStorage при нехватке места. Отказ не критичен.
 navigator.storage?.persist?.().catch(() => undefined)

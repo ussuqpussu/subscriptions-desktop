@@ -1,15 +1,16 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Подписки — трекер подписок</title><link rel="icon" href="icon.svg"><link rel="stylesheet" href="style.css"></head>
+<title>Подписки — трекер подписок</title><meta name="description" content="Учебный проект: трекер подписок для Windows и iPhone. Траты в месяц, даты платежей, напоминания и синхронизация."><link rel="canonical" href="https://ussuqpussu.github.io/subscriptions-desktop/"><meta property="og:title" content="Подписки — трекер подписок"><meta property="og:description" content="Учебный проект: трекер подписок для Windows и iPhone. Траты в месяц, даты платежей, напоминания и синхронизация."><meta property="og:image" content="https://ussuqpussu.github.io/subscriptions-desktop/screen-desktop.png"><link rel="icon" href="icon.svg"><link rel="stylesheet" href="style.css"></head>
 <body><div class="wrap">
-<nav><b><img src="icon.svg" alt="">Подписки</b><a class="hide" href="#features">Возможности</a><a class="hide" href="#history">История</a><a href="#team">Команда</a><a href="slides.html">Презентация</a></nav>
+<nav><b><img src="icon.svg" alt="" width="28" height="28">Подписки</b><a class="hide" href="#features">Возможности</a><a class="hide" href="#history">История</a><a href="#team">Команда</a><a href="slides.html">Презентация</a></nav>
 
 <header class="hero"><div>
 <h1>Все подписки<br>в одном месте.<br><span>Ни одного лишнего списания.</span></h1>
-<p class="lead">Приложение для Windows и iPhone: показывает, сколько уходит на подписки в месяц, когда следующий платёж и что пора отменить.</p>
+<p class="lead">Программа для Windows и приложение для iPhone: сколько уходит на подписки в месяц, когда следующий платёж и что пора отменить. Данные синхронизируются между ними.</p>
 <a class="btn" href="https://github.com/ussuqpussu/subscriptions-desktop/releases/latest">Скачать для Windows</a>
 <a class="btn ghost" href="https://github.com/ussuqpussu/subscriptions-desktop">Исходный код</a>
-</div><img class="shot" src="screen.png" alt="Окно приложения на Windows"></header>
+</div></header>
+<figure class="screens"><img class="desk" src="screen-desktop.png" width="1280" height="800" alt="Программа «Подписки» на Windows: сводка трат и список подписок"><img class="phone" src="screen-phone.png" width="780" height="1688" alt="То же приложение на iPhone"></figure>
 
 <section id="features"><h2>Что умеет</h2><div class="grid">
 <div class="card"><div class="lamps"><i style="background:var(--green)"></i><i style="background:var(--yellow)"></i><i style="background:var(--red)"></i></div><h3>Лампочки статуса</h3><p>Зелёная — платить не скоро, жёлтая — 3 дня и меньше, красная — просрочено.</p></div>
@@ -19,6 +20,10 @@
 <div class="card"><h3>Статистика</h3><p>Диаграмма по категориям, сколько оплачено за месяц и год.</p></div>
 <div class="card"><h3>Шифрованная синхронизация</h3><p>ПК и телефон по секретному коду. Сервер видит только шифротекст.</p></div>
 <div class="card"><h3>Экспорт и копии</h3><p>Напоминания в календарь (.ics), резервная копия в файл и восстановление.</p></div>
+<div class="card"><h3>Уведомления Windows</h3><p>Напоминание о платеже всплывает в углу экрана. Можно включить запуск вместе с Windows.</p></div>
+<div class="card"><h3>Удобно с клавиатуры</h3><p>Ctrl+N — новая подписка, Ctrl+F — поиск, Ctrl+1/2/3 — разделы. «Оплачено» прямо в строке.</p></div>
+<div class="card"><h3>Окно любого размера</h3><p>Широкое окно — боковое меню и две колонки, узкое — вид как на телефоне.</p></div>
+<div class="card"><h3>Пример за один клик</h3><p>Кнопка «Заполнить примером» показывает приложение с подписками, не вводя их вручную.</p></div>
 <div class="card"><h3>Работает без интернета</h3><p>Данные хранятся на устройстве, ничего не нужно регистрировать.</p></div>
 </div></section>
 
@@ -26,8 +31,9 @@
 <div class="step"><small>Идея</small><p>Вова заметил, что деньги незаметно уходят на подписки, о которых давно забыл. Захотелось приложение, которое заранее предупреждает о списании — простое и без рекламы.</p></div>
 <div class="step"><small>Сентябрь 2026 · первая версия</small><p>Сделали веб-приложение для iPhone на React и TypeScript: список подписок, расчёт дат платежей и лампочки статуса.</p></div>
 <div class="step"><small>Развитие</small><p>Добавили курсы ЦБ, календарь, статистику, пуш-уведомления, логотипы сервисов и шифрованную синхронизацию через собственный сервер на Cloudflare.</p></div>
-<div class="step"><small>Тестирование</small><p>Написали 142 автотеста: даты платежей, 31-е число в коротких месяцах, курсы, экспорт, синхронизация.</p></div>
-<div class="step"><small>Ноябрь 2026 · версия для ПК</small><p>Упаковали приложение в Electron и собрали установщик .exe для Windows, расширили каталог сервисов до 75.</p></div>
+<div class="step"><small>Тестирование</small><p>149 автотестов: даты платежей, 31-е число в коротких месяцах, курсы, экспорт, синхронизация, уведомления. Плюс сценарные проверки окна на ширине от 380 до 1920 пикселей.</p></div>
+<div class="step"><small>Ноябрь 2026 · версия для ПК</small><p>Упаковали приложение в Electron, собрали установщики для Windows 10/11 и Windows 7, расширили каталог сервисов до 75.</p></div>
+<div class="step"><small>Ноябрь 2026 · дизайн для ПК</small><p>Переделали интерфейс под широкое окно: боковое меню, сводка рядом с ближайшим платежом, календарь в две колонки, уведомления Windows и горячие клавиши.</p></div>
 </div></section>
 
 <section id="team"><h2>Команда</h2><div class="team">

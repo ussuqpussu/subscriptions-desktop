@@ -20,6 +20,7 @@ import { NavBar } from './components/NavBar'
 import { NextPayment } from './components/NextPayment'
 import { NotificationsSheet, type PushMessage } from './components/NotificationsSheet'
 import { SearchField } from './components/SearchField'
+import { Sidebar } from './components/Sidebar'
 import { StatsView } from './components/StatsView'
 import { SyncSheet, type SyncMessage } from './components/SyncSheet'
 import { SubscriptionForm, type SubscriptionValue } from './components/SubscriptionForm'
@@ -37,7 +38,9 @@ import {
   type AccentId,
   type ThemeMode,
 } from './constants'
+import { useDesktopReminders } from './hooks/useDesktopReminders'
 import { useLocalStorage } from './hooks/useLocalStorage'
+import { useMediaQuery } from './hooks/useMediaQuery'
 import { usePushSync } from './hooks/usePushSync'
 import { useRates } from './hooks/useRates'
 import { useSync } from './hooks/useSync'
@@ -49,7 +52,9 @@ import { getDueDate } from './utils/dateUtils'
 import { shareOrDownload, type ShareFile } from './utils/fileShare'
 import { formatDate, formatSubscriptionCount } from './utils/format'
 import { createAllSubscriptionsIcs, createSubscriptionIcs, icsFileName } from './utils/icsUtils'
+import { createDemoSubscriptions } from './utils/demo'
 import { createId } from './utils/id'
+import { desktopBridge, isDesktopApp } from './utils/platform'
 import { applyAccent, applyTheme, parseAccentId, parseThemeMode, watchSystemTheme } from './utils/theme'
 import {
   disablePush,
@@ -77,6 +82,11 @@ type EditorState = { mode: 'create' } | { mode: 'edit'; id: string } | null
 
 const parseStoredSubscriptions = (raw: unknown) => normalizeSubscriptions(raw).items
 const parseStoredFlag = (raw: unknown) => raw === true
+const parseStoredFlagOn = (raw: unknown) => raw !== false
+
+/** С этой ширины окна — раскладка для ПК: боковое меню вместо нижней панели. */
+const WIDE_QUERY = '(min-width: 960px)'
+const DESKTOP_NOTIFY_KEY = 'subscriptions.desktopNotifications'
 
 /** Через столько без копии показываем напоминание, «Позже» откладывает на неделю. */
 const BACKUP_REMINDER_MS = 30 * 24 * 60 * 60 * 1000
@@ -125,6 +135,13 @@ export default function App() {
   const [pushBusy, setPushBusy] = useState(false)
   const [pushMessage, setPushMessage] = useState<PushMessage | null>(null)
   const restoreInputRef = useRef<HTMLInputElement>(null)
+  const searchRef = useRef<HTMLDivElement>(null)
+  const wide = useMediaQuery(WIDE_QUERY)
+  const [desktopNotify, setDesktopNotify] = useLocalStorage(DESKTOP_NOTIFY_KEY, true, parseStoredFlagOn)
+  const [autostart, setAutostart] = useState(false)
+  useEffect(() => {
+    desktopBridge?.getAutostart().then(setAutostart).catch(() => undefined)
+  }, [])
 
   // Оформление ставится до отрисовки, иначе первый кадр успевает мигнуть чужой темой.
   useLayoutEffect(() => applyTheme(theme), [theme])
@@ -208,6 +225,22 @@ export default function App() {
   }, [])
   useEffect(refreshPushState, [refreshPushState])
   usePushSync(subscriptions, today, pushState === 'on', reminderSettings)
+  useDesktopReminders(subscriptions, isDesktopApp && desktopNotify, reminderSettings)
+
+  const handleDesktopNotifyToggle = (enabled: boolean) => {
+    setDesktopNotify(enabled)
+    // Windows обычно разрешает сразу; запрос нужен, если уведомления выключали.
+    if (enabled && typeof Notification !== 'undefined' && Notification.permission === 'default') {
+      void Notification.requestPermission()
+    }
+  }
+
+  const handleAutostartToggle = (enabled: boolean) => {
+    desktopBridge
+      ?.setAutostart(enabled)
+      .then(setAutostart)
+      .catch(() => setPushMessage({ text: 'Не удалось изменить автозапуск.', tone: 'error' }))
+  }
 
   const editing = editor?.mode === 'edit' ? (subscriptions.find((item) => item.id === editor.id) ?? null) : null
   const formOpen = editor?.mode === 'create' || editing !== null
@@ -430,13 +463,55 @@ export default function App() {
 
   const openCreate = () => setEditor({ mode: 'create' })
 
+  const fillDemo = () => {
+    dispatch({ type: 'replaceAll', subscriptions: createDemoSubscriptions(today) })
+    // Пример не жалко потерять: напоминание о копии для него не показываем.
+    setLastBackupAt(Date.now())
+    showToast('Добавлен пример. Удалить его: «Удалить все данные».')
+  }
+
+  // Горячие клавиши ПК. Пока открыто окно (dialog), работают только его клавиши.
+  const anyDialogOpen =
+    formOpen || confirm !== null || notificationsOpen || filtersOpen || appearanceOpen || syncOpen
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (!(event.ctrlKey || event.metaKey) || event.altKey || anyDialogOpen) return
+      const key = event.key.toLowerCase()
+      if (key === 'n' || key === 'т') {
+        event.preventDefault()
+        setEditor({ mode: 'create' })
+      } else if ((key === 'f' || key === 'а') && subscriptions.length > 0) {
+        event.preventDefault()
+        setTab('home')
+        window.requestAnimationFrame(() => searchRef.current?.querySelector('input')?.focus())
+      } else if (subscriptions.length > 0 && (key === '1' || key === '2' || key === '3')) {
+        event.preventDefault()
+        setTab(key === '1' ? 'home' : key === '2' ? 'stats' : 'calendar')
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [anyDialogOpen, subscriptions.length])
+
   return (
     <>
-      <NavBar title="Подписки" menuItems={menuItems} onBellClick={openNotifications} />
+      <div className={styles.shell} data-wide={wide || undefined}>
+      {wide ? (
+        <Sidebar
+          tab={subscriptions.length > 0 ? tab : null}
+          onTabChange={setTab}
+          onAdd={openCreate}
+          onNotifications={openNotifications}
+          overdueCount={overdueCount}
+          menuItems={menuItems}
+        />
+      ) : (
+        <NavBar title="Подписки" menuItems={menuItems} onBellClick={openNotifications} />
+      )}
 
-      <main className={styles.main}>
+      <main className={styles.main} data-tab={subscriptions.length === 0 ? 'empty' : tab}>
         {subscriptions.length === 0 ? (
-          <EmptyState variant="empty" onAction={openCreate} />
+          <EmptyState variant="empty" onAction={openCreate} onDemo={fillDemo} />
         ) : tab === 'stats' ? (
           <StatsView subscriptions={subscriptions} today={today} rates={rates} />
         ) : tab === 'calendar' ? (
@@ -456,6 +531,7 @@ export default function App() {
                 onSnooze={() => setLastBackupAt(Date.now() - BACKUP_REMINDER_MS + BACKUP_SNOOZE_MS)}
               />
             )}
+            <div className={styles.overview}>
             <SummaryBar
               subscriptions={subscriptions}
               today={today}
@@ -469,7 +545,12 @@ export default function App() {
               hidden={hideAmounts}
               onOpen={(subscription) => setEditor({ mode: 'edit', id: subscription.id })}
             />
-            {subscriptions.length >= 6 && <SearchField value={searchQuery} onChange={setSearchQuery} />}
+            </div>
+            {(wide || subscriptions.length >= 6) && (
+              <div ref={searchRef}>
+                <SearchField value={searchQuery} onChange={setSearchQuery} placeholder={wide ? 'Поиск — Ctrl+F' : 'Поиск'} />
+              </div>
+            )}
             {visibleSubscriptions.length === 0 ? (
               <EmptyState variant="filtered" onAction={resetFilters} />
             ) : (
@@ -487,8 +568,9 @@ export default function App() {
           </>
         )}
       </main>
+      </div>
 
-      <BottomBar tab={subscriptions.length > 0 ? tab : null} onTabChange={setTab} onAdd={openCreate} />
+      {!wide && <BottomBar tab={subscriptions.length > 0 ? tab : null} onTabChange={setTab} onAdd={openCreate} />}
 
       <SubscriptionForm
         open={formOpen}
@@ -513,6 +595,16 @@ export default function App() {
         onTestPush={handleTestPush}
         onExportAll={handleExportAll}
         exportDisabled={subscriptions.length === 0}
+        desktop={
+          isDesktopApp
+            ? {
+                notify: desktopNotify,
+                onNotifyChange: handleDesktopNotifyToggle,
+                autostart: desktopBridge ? autostart : null,
+                onAutostartChange: handleAutostartToggle,
+              }
+            : null
+        }
       />
       <FiltersSheet
         open={filtersOpen}

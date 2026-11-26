@@ -245,3 +245,49 @@
     margin-right: 0;
   }
 }
+
+/* Кнопка удаления видна только при мыши; на телефоне удаляют свайпом. */
+.remove {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* Подсветка всей строки, а не только её левой части. */
+  .content:hover {
+    background-image: linear-gradient(var(--fill), var(--fill));
+  }
+
+  .remove {
+    display: grid;
+    margin-right: 6px;
+    color: var(--text-red);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .row:hover .remove,
+  .remove:focus-visible {
+    opacity: 1;
+  }
+}
+
+/* Широкое окно: «Оплачено» в той же строке, а не под ней. */
+@media (min-width: 960px) {
+  .content {
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+  }
+
+  .payRow {
+    grid-column: auto;
+    order: -1;
+    grid-row: 1;
+    grid-column-start: 2;
+    padding: 0 8px 0 0;
+    margin-top: 0;
+  }
+
+  .content > .main {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}

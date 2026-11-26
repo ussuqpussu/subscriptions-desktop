@@ -1,6 +1,6 @@
 // Обёртка Electron: раздаёт собранное приложение с локального сервера и открывает его в окне.
 // Сервер нужен потому, что service worker и синхронизация не работают с file://.
-const { app, BrowserWindow, shell, Menu } = require('electron')
+const { app, BrowserWindow, shell, Menu, ipcMain, screen, session } = require('electron')
 const http = require('node:http')
 const fs = require('node:fs')
 const path = require('node:path')
@@ -33,12 +33,21 @@ function startServer() {
 
 let win = null
 
+// Автозапуск вместе с Windows: приложение стартует свёрнутым и присылает напоминания.
+ipcMain.handle('autostart:get', () => app.getLoginItemSettings().openAtLogin)
+ipcMain.handle('autostart:set', (_event, enabled) => {
+  app.setLoginItemSettings({ openAtLogin: enabled === true, args: ['--hidden'] })
+  return app.getLoginItemSettings().openAtLogin
+})
+
 function createWindow() {
+  // Окно не больше рабочей области: на ноутбуке 1366×768 оно иначе вылезет за экран.
+  const area = screen.getPrimaryDisplay().workAreaSize
   win = new BrowserWindow({
-    width: 480, height: 920, minWidth: 380, minHeight: 640,
+    width: Math.min(1280, area.width), height: Math.min(820, area.height), minWidth: 380, minHeight: 560,
     backgroundColor: '#000000', title: 'Подписки', autoHideMenuBar: true,
     icon: path.join(__dirname, 'icon.png'),
-    webPreferences: { contextIsolation: true, sandbox: true },
+    webPreferences: { contextIsolation: true, sandbox: true, preload: path.join(__dirname, 'preload.cjs') },
   })
   // Ссылки на сайты сервисов открываются в обычном браузере, а не внутри приложения.
   win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' } })
@@ -46,7 +55,10 @@ function createWindow() {
     if (!url.startsWith(`http://${HOST}:${PORT}`)) { event.preventDefault(); shell.openExternal(url) }
   })
   win.loadURL(`http://${HOST}:${PORT}/`)
+  if (process.argv.includes('--hidden')) win.minimize()
 }
+
+app.setAppUserModelId('ru.subscriptions.desktop')
 
 if (!app.requestSingleInstanceLock()) {
   app.quit()
@@ -59,6 +71,9 @@ if (!app.requestSingleInstanceLock()) {
       dialog.showErrorBox('Подписки', `Порт ${PORT} занят другой программой. Закройте её и запустите приложение снова.\n\n${error}`)
       app.quit(); return
     }
+    // Версия 1.0 регистрировала service worker, из-за него окно открывалось чёрным.
+    // Удаляем его до загрузки страницы; подписки в localStorage не трогаем.
+    await session.defaultSession.clearStorageData({ storages: ['serviceworkers', 'cachestorage'] }).catch(() => undefined)
     createWindow()
   })
   app.on('window-all-closed', () => app.quit())

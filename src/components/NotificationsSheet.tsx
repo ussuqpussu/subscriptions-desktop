@@ -40,6 +40,16 @@ interface NotificationsSheetProps {
   onTestPush: () => void
   onExportAll: () => void
   exportDisabled: boolean
+  /** Версия для ПК: уведомления Windows и автозапуск вместо веб-пушей. null — телефон или браузер. */
+  desktop?: DesktopNotifications | null
+}
+
+export interface DesktopNotifications {
+  notify: boolean
+  onNotifyChange: (enabled: boolean) => void
+  /** null — автозапуском управлять нельзя. */
+  autostart: boolean | null
+  onAutostartChange: (enabled: boolean) => void
 }
 
 export function NotificationsSheet({
@@ -54,6 +64,7 @@ export function NotificationsSheet({
   onTestPush,
   onExportAll,
   exportDisabled,
+  desktop = null,
 }: NotificationsSheetProps) {
   const canToggle = pushState === 'on' || pushState === 'off'
   const uid = useId()
@@ -77,7 +88,36 @@ export function NotificationsSheet({
         </header>
 
         <div className={styles.body}>
-          {pushState !== 'unconfigured' && (
+          {desktop && (
+            <section className={styles.section}>
+              <div className={styles.group}>
+                <div className={styles.row}>
+                  <span className={styles.rowIcon} aria-hidden="true">
+                    <BellIcon />
+                  </span>
+                  <span id={id('desktop-notify')} className={styles.rowLabel}>
+                    Уведомления Windows
+                  </span>
+                  <Switch checked={desktop.notify} labelledBy={id('desktop-notify')} onChange={desktop.onNotifyChange} />
+                </div>
+                {desktop.autostart !== null && (
+                  <div className={styles.row}>
+                    <span id={id('autostart')} className={styles.rowLabel}>
+                      Запускать вместе с Windows
+                    </span>
+                    <Switch checked={desktop.autostart} labelledBy={id('autostart')} onChange={desktop.onAutostartChange} />
+                  </div>
+                )}
+                <p className={styles.message} role="status" data-tone={message?.tone}>
+                  {message?.text}
+                </p>
+              </div>
+              <p className={styles.hint}>
+                Приходят, пока программа открыта или свёрнута. С автозапуском она стартует свёрнутой вместе с Windows.
+              </p>
+            </section>
+          )}
+          {!desktop && pushState !== 'unconfigured' && (
             <section className={styles.section}>
               <div className={styles.group}>
                 <div className={styles.row}>
@@ -114,7 +154,7 @@ export function NotificationsSheet({
             </section>
           )}
 
-          {pushState !== 'unconfigured' && (
+          {(desktop || pushState !== 'unconfigured') && (
             <section className={styles.section}>
               <div className={styles.group}>
                 <div className={styles.row}>

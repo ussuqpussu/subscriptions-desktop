@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Подписки — презентация</title><link rel="icon" href="icon.svg"><link rel="stylesheet" href="style.css">
+<title>Подписки — презентация</title><meta name="description" content="Презентация учебного проекта «Подписки»: проблема, решение, технологии, тестирование."><link rel="canonical" href="https://ussuqpussu.github.io/subscriptions-desktop/slides.html"><meta property="og:title" content="Подписки — трекер подписок"><meta property="og:description" content="Презентация учебного проекта «Подписки»: проблема, решение, технологии, тестирование."><meta property="og:image" content="https://ussuqpussu.github.io/subscriptions-desktop/screen-desktop.png"><link rel="icon" href="icon.svg"><link rel="stylesheet" href="style.css">
 <style>
 body{overflow:hidden}
 .s{position:fixed;inset:0;display:none;flex-direction:column;justify-content:center;padding:6vh 8vw}
@@ -8,17 +8,19 @@ body{overflow:hidden}
 .s h1{font-size:clamp(40px,7vw,88px)}.s h2{font-size:clamp(30px,4.5vw,56px);margin-bottom:4vh}
 .s li{font-size:clamp(18px,2.4vw,28px);margin:1.2vh 0;color:var(--muted)}.s li b{color:var(--text)}
 .s ul{padding-left:1.2em}
-.row{display:flex;gap:6vw;align-items:center}.row img{height:70vh;border-radius:24px;border:1px solid var(--line)}
+.row{display:flex;gap:6vw;align-items:center}.row img{height:70vh;width:auto;border-radius:24px;border:1px solid var(--line)}
 .n{position:fixed;right:24px;bottom:18px;color:var(--muted);font-size:14px}
 .hint{position:fixed;left:24px;bottom:18px;color:var(--muted);font-size:14px}
 @media (max-width:760px){.row img{display:none}}
 </style></head><body>
 <div class="s"><h1>Подписки<br><span style="color:var(--accent)">трекер подписок</span></h1><p class="lead">Артём и Вова · 2026</p></div>
 <div class="s"><h2>Проблема</h2><ul><li>Подписок много: музыка, кино, облако, игры</li><li>Списания <b>незаметные</b> — легко забыть и переплатить</li><li>Пробный период заканчивается, и деньги уходят сами</li></ul></div>
-<div class="s"><h2>Решение</h2><div class="row"><ul><li><b>Все подписки в одном списке</b></li><li><b>Лампочки:</b> зелёная, жёлтая, красная</li><li><b>Итог в рублях</b> по курсу ЦБ</li><li>Предупреждение о конце пробного периода</li></ul><img src="screen.png" alt=""></div></div>
+<div class="s"><h2>Решение</h2><div class="row"><ul><li><b>Все подписки в одном списке</b></li><li><b>Лампочки:</b> зелёная, жёлтая, красная</li><li><b>Итог в рублях</b> по курсу ЦБ</li><li>Предупреждение о конце пробного периода</li></ul><img src="screen-phone.png" alt="Приложение на iPhone" width="780" height="1688"></div></div>
 <div class="s"><h2>Чем отличается</h2><ul><li><b>75 российских и зарубежных сервисов</b> с логотипами</li><li><b>Календарь списаний</b> с оплатой в один клик</li><li><b>Шифрованная синхронизация</b> ПК ↔ iPhone</li><li>Без регистрации и рекламы, работает офлайн</li></ul></div>
+<div class="s"><h2>Версия для ПК</h2><img src="screen-desktop.png" alt="Программа на Windows" width="1280" height="800" style="width:100%;max-height:72vh;object-fit:contain;object-position:left;border-radius:16px;border:1px solid var(--line)"></div>
+<div class="s"><h2>Один код — две платформы</h2><ul><li><b>Широкое окно:</b> боковое меню, две колонки</li><li><b>Телефон:</b> нижняя панель, свайпы</li><li><b>Windows:</b> уведомления, автозапуск, Ctrl+N / Ctrl+F</li><li><b>Синхронизация</b> ПК ↔ iPhone с шифрованием</li></ul></div>
 <div class="s"><h2>Как сделано</h2><ul><li><b>React + TypeScript + Vite</b> — интерфейс</li><li><b>Electron</b> — приложение .exe для Windows</li><li><b>Cloudflare Workers</b> — синхронизация, логотипы, каталог</li><li><b>GitHub Actions</b> — автосборка установщика</li></ul></div>
-<div class="s"><h2>Тестирование</h2><ul><li><b>142 автотеста</b>, все проходят</li><li>Даты платежей, 31-е число в коротком месяце</li><li>Курсы валют, экспорт в календарь, резервные копии</li><li>Синхронизация и шифрование</li></ul></div>
+<div class="s"><h2>Тестирование</h2><ul><li><b>149 автотестов</b>, все проходят</li><li>Сценарные проверки окна от 380 до 1920 px</li><li>Даты платежей, 31-е число в коротком месяце</li><li>Курсы валют, экспорт в календарь, резервные копии</li><li>Синхронизация и шифрование</li></ul></div>
 <div class="s"><h2>Команда</h2><ul><li><b>Вова</b> — автор идеи</li><li><b>Артём</b> — разработка</li></ul></div>
 <div class="s"><h1>Спасибо!</h1><p class="lead">Сайт и установщик: github.com/ussuqpussu/subscriptions-desktop</p></div>
 <div class="hint">← → или клик</div><div class="n" id="n"></div>

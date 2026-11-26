@@ -154,9 +154,12 @@
   inset: 0;
   display: grid;
   place-items: center;
+  /* Текст держится внутри кольца: внутренний диаметр около 112 px. */
+  padding: 0 34px;
   font-family: var(--font-rounded);
-  font-size: 1.25rem;
+  font-size: 1.0625rem;
   font-weight: 600;
+  line-height: 1.2;
   text-align: center;
 }
 
@@ -216,4 +219,19 @@
 .tip[data-tone='warning'] {
   border-color: rgba(255, 69, 58, 0.4);
   color: var(--text-red);
+}
+
+/* Широкое окно: карточки статистики в две колонки. */
+/* Колонки, а не сетка: карточки разной высоты встают одна под другой без дыр. */
+@media (min-width: 1100px) {
+  .body {
+    display: block;
+    columns: 2;
+    column-gap: 16px;
+  }
+
+  .body > * {
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
 }

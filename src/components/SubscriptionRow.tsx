@@ -251,6 +251,16 @@ export function SubscriptionRow({
           <CalendarPlusIcon />
         </button>
 
+        {/* На ПК удаление — кнопкой при наведении: свайп мышью неочевиден. */}
+        <button
+          type="button"
+          className={`icon-button ${styles.remove}`}
+          aria-label={`Удалить «${subscription.name}»`}
+          onClick={() => onDelete(subscription)}
+        >
+          <TrashIcon />
+        </button>
+
         {needsPayment && (
           <div className={styles.payRow}>
             <button

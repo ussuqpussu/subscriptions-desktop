@@ -4,6 +4,8 @@ import { SearchOffIcon, StackIcon } from './icons'
 interface EmptyStateProps {
   variant: 'empty' | 'filtered'
   onAction: () => void
+  /** Заполнить список примером — для знакомства с приложением. */
+  onDemo?: () => void
 }
 
 const CONTENT = {
@@ -19,7 +21,7 @@ const CONTENT = {
   },
 } as const
 
-export function EmptyState({ variant, onAction }: EmptyStateProps) {
+export function EmptyState({ variant, onAction, onDemo }: EmptyStateProps) {
   const content = CONTENT[variant]
   return (
     <section className={styles.empty} aria-labelledby="empty-title">
@@ -35,6 +37,11 @@ export function EmptyState({ variant, onAction }: EmptyStateProps) {
       >
         {content.action}
       </button>
+      {variant === 'empty' && onDemo && (
+        <button type="button" className={`button ${styles.action}`} onClick={onDemo}>
+          Заполнить примером
+        </button>
+      )}
     </section>
   )
 }

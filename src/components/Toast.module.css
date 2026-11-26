@@ -10,6 +10,20 @@
   pointer-events: none;
 }
 
+/* На ПК нижней панели нет, а слева боковое меню: сообщение внизу по центру рабочей области. */
+@media (min-width: 960px) {
+  .region {
+    left: 264px;
+    bottom: 24px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .region {
+    left: 272px;
+  }
+}
+
 .toast {
   display: flex;
   align-items: center;
