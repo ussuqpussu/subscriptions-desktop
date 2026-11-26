@@ -9,6 +9,8 @@ const base = process.env.BASE_PATH ?? '/'
 // https://vite.dev/config/
 export default defineConfig({
   base,
+  // Для сборки под Windows 7 (Electron 22 = Chrome 108) код транслируется под старый движок.
+  build: process.env.VITE_TARGET ? { target: process.env.VITE_TARGET } : {},
   plugins: [
     react(),
     VitePWA({

@@ -21,3 +21,21 @@ jobs:
       - if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with: { files: release/*.exe }
+
+  build-win7:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      # Electron 22 — последняя версия с поддержкой Windows 7 (движок Chrome 108).
+      - run: npm install --no-save electron@22.3.27
+      - run: npm run build
+        env: { VITE_TARGET: chrome108 }
+      - run: npx electron-builder --win --publish never "'-c.artifactName=Podpiski-Win7-Setup-${version}.${ext}' -c.electronVersion=22.3.27
+      - uses: actions/upload-artifact@v4
+        with: { name: Podpiski-Win7-Setup, path: release/*.exe }
+      - if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with: { files: release/*.exe }

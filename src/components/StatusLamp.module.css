@@ -8,6 +8,7 @@
   height: var(--lamp-size);
   border-radius: 50%;
   background: var(--lamp-color);
+  box-shadow: 0 0 8px 1px var(--lamp-color);
   box-shadow: 0 0 8px 1px color-mix(in srgb, var(--lamp-color) 45%, transparent);
 }
 
@@ -31,6 +32,7 @@
 
 @keyframes pulse {
   50% {
+    box-shadow: 0 0 12px 3px var(--lamp-color);
     box-shadow: 0 0 12px 3px color-mix(in srgb, var(--lamp-color) 60%, transparent);
   }
 }

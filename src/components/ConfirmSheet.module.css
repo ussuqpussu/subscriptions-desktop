@@ -57,10 +57,12 @@ button.button::before {
 
 /* Акцентная кнопка — тонированное стекло, а не плоская заливка: остаётся Liquid Glass, не превращается в обычную кнопку. */
 .button[data-tone='primary'] {
+  background: var(--accent);
   background: color-mix(in srgb, var(--accent) 55%, transparent);
   color: var(--on-accent);
 }
 
 .button[data-tone='primary']:active {
+  background: var(--accent-pressed);
   background: color-mix(in srgb, var(--accent-pressed) 65%, transparent);
 }
