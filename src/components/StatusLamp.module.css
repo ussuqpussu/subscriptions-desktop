@@ -1,0 +1,36 @@
+/* Плоская лампочка: сплошной цвет и мягкое свечение, без бликов и объёма. */
+.lamp {
+  --lamp-color: var(--lamp-green);
+  --lamp-size: 10px;
+  display: inline-block;
+  flex: none;
+  width: var(--lamp-size);
+  height: var(--lamp-size);
+  border-radius: 50%;
+  background: var(--lamp-color);
+  box-shadow: 0 0 8px 1px color-mix(in srgb, var(--lamp-color) 45%, transparent);
+}
+
+.lamp[data-size='small'] {
+  --lamp-size: 8px;
+}
+
+.lamp[data-lamp='yellow'] {
+  --lamp-color: var(--lamp-yellow);
+}
+
+.lamp[data-lamp='red'] {
+  --lamp-color: var(--lamp-red);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+.lamp[data-lamp='off'] {
+  --lamp-color: var(--lamp-off);
+  box-shadow: none;
+}
+
+@keyframes pulse {
+  50% {
+    box-shadow: 0 0 12px 3px color-mix(in srgb, var(--lamp-color) 60%, transparent);
+  }
+}

@@ -1,0 +1,39 @@
+.logo {
+  --size: var(--logo-size, 44px);
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: calc(var(--size) * 0.23);
+  background: var(--surface-2);
+  color: var(--label);
+  font-size: calc(var(--size) * 0.4);
+  font-weight: 600;
+  line-height: 1;
+  /* Свой compositing layer: иначе внутри анимируемой (scale) кнопки один угол
+     скругления иногда не докрашивается (известный баг Chromium). */
+  transform: translateZ(0);
+}
+
+/* Логотип сайта лежит прямо на плашке: без своей подложки и рамки, углы как у иконки приложения. */
+.logo[data-kind='site'] {
+  border-color: transparent;
+  background: transparent;
+}
+
+.logo[data-kind='site'] .image,
+.logo[data-kind='custom'] .image {
+  width: 100%;
+  height: 100%;
+}
+
+.logo[data-kind='site'] .image {
+  object-fit: contain;
+}
+
+.logo[data-kind='custom'] .image {
+  object-fit: cover;
+}

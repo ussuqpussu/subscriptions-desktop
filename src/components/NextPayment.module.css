@@ -1,0 +1,101 @@
+.card {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--grad-card);
+  color: var(--on-grad);
+  text-align: left;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--on-grad-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.date {
+  font-weight: 500;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.logo {
+  --logo-size: 48px;
+}
+
+/* Светлая обводка отделяет любой логотип от градиента карточки. */
+.logo[data-kind] {
+  border: 1.5px solid var(--on-grad-rim);
+}
+
+/* У буквы-заглушки — полупрозрачная тёмная подложка. */
+.logo[data-kind='letter'] {
+  background: var(--on-grad-shade);
+}
+
+.text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.due {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--on-grad-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* Лампочка не сжимается, когда подпись длинная. */
+.due > :first-child {
+  flex: none;
+}
+
+/* Многоточие ставит внутренний элемент: на flex-контейнере оно не работает. */
+.dueText {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+
+/* Красная лампочка сливается с малиновым фоном: обводим её белым. */
+.due > :first-child {
+  outline: 1.5px solid var(--on-grad-outline);
+}
+
+.amount {
+  font-family: var(--font-rounded);
+  font-weight: 600;
+  font-size: 1.625rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}

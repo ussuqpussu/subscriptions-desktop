@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Подписки — трекер подписок</title><link rel="icon" href="icon.svg"><link rel="stylesheet" href="style.css"></head>
+<body><div class="wrap">
+<nav><b><img src="icon.svg" alt="">Подписки</b><a class="hide" href="#features">Возможности</a><a class="hide" href="#history">История</a><a href="#team">Команда</a><a href="slides.html">Презентация</a></nav>
+
+<header class="hero"><div>
+<h1>Все подписки<br>в одном месте.<br><span>Ни одного лишнего списания.</span></h1>
+<p class="lead">Приложение для Windows и iPhone: показывает, сколько уходит на подписки в месяц, когда следующий платёж и что пора отменить.</p>
+<a class="btn" href="https://github.com/ussuqpussu/subscriptions-desktop/releases/latest">Скачать для Windows</a>
+<a class="btn ghost" href="https://github.com/ussuqpussu/subscriptions-desktop">Исходный код</a>
+</div><img class="shot" src="screen.png" alt="Окно приложения на Windows"></header>
+
+<section id="features"><h2>Что умеет</h2><div class="grid">
+<div class="card"><div class="lamps"><i style="background:var(--green)"></i><i style="background:var(--yellow)"></i><i style="background:var(--red)"></i></div><h3>Лампочки статуса</h3><p>Зелёная — платить не скоро, жёлтая — 3 дня и меньше, красная — просрочено.</p></div>
+<div class="card"><h3>Траты в рублях</h3><p>Доллары, евро и тенге пересчитываются по курсу ЦБ. Итог в месяц и в год.</p></div>
+<div class="card"><h3>Календарь списаний</h3><p>Месяц с отметками платежей и концов пробных периодов, оплата прямо из календаря.</p></div>
+<div class="card"><h3>75 готовых сервисов</h3><p>Яндекс Плюс, Кинопоиск, Spotify, Steam, ChatGPT и другие — в одно нажатие, с логотипом.</p></div>
+<div class="card"><h3>Статистика</h3><p>Диаграмма по категориям, сколько оплачено за месяц и год.</p></div>
+<div class="card"><h3>Шифрованная синхронизация</h3><p>ПК и телефон по секретному коду. Сервер видит только шифротекст.</p></div>
+<div class="card"><h3>Экспорт и копии</h3><p>Напоминания в календарь (.ics), резервная копия в файл и восстановление.</p></div>
+<div class="card"><h3>Работает без интернета</h3><p>Данные хранятся на устройстве, ничего не нужно регистрировать.</p></div>
+</div></section>
+
+<section id="history"><h2>Как создавали</h2><div class="timeline">
+<div class="step"><small>Идея</small><p>Вова заметил, что деньги незаметно уходят на подписки, о которых давно забыл. Захотелось приложение, которое заранее предупреждает о списании — простое и без рекламы.</p></div>
+<div class="step"><small>Сентябрь 2026 · первая версия</small><p>Сделали веб-приложение для iPhone на React и TypeScript: список подписок, расчёт дат платежей и лампочки статуса.</p></div>
+<div class="step"><small>Развитие</small><p>Добавили курсы ЦБ, календарь, статистику, пуш-уведомления, логотипы сервисов и шифрованную синхронизацию через собственный сервер на Cloudflare.</p></div>
+<div class="step"><small>Тестирование</small><p>Написали 142 автотеста: даты платежей, 31-е число в коротких месяцах, курсы, экспорт, синхронизация.</p></div>
+<div class="step"><small>Ноябрь 2026 · версия для ПК</small><p>Упаковали приложение в Electron и собрали установщик .exe для Windows, расширили каталог сервисов до 75.</p></div>
+</div></section>
+
+<section id="team"><h2>Команда</h2><div class="team">
+<div class="card"><div class="ava">А</div><h3>Артём</h3><div class="role">Разработка</div><p>Писал код приложения.</p></div>
+<div class="card"><div class="ava">В</div><h3>Вова</h3><div class="role">Автор идеи</div><p>Придумал идею приложения. 3400 MMR в Dota 2, сейчас в свободном поиске работы.</p></div>
+</div></section>
+
+<footer>Подписки · 2026 · Артём и Вова</footer>
+</div></body></html>

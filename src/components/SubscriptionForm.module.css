@@ -1,0 +1,411 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: inherit;
+}
+
+.header {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 8px 10px;
+  border-bottom: 1px solid var(--separator);
+}
+
+.title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.headerButton {
+  justify-self: start;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--accent-text);
+  font-size: 1.0625rem;
+  transition: background-color 0.15s ease;
+}
+
+.headerButton:active {
+  background: var(--fill);
+}
+
+/* Главное действие формы — залитая синяя капсула. */
+.done {
+  justify-self: end;
+  min-height: 36px;
+  margin-right: 8px;
+  padding: 0 16px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.done:active {
+  background: var(--accent-pressed);
+}
+
+.body {
+  display: grid;
+  gap: 8px;
+  padding: 16px 16px calc(28px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.section {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.section:first-child {
+  margin-top: 0;
+}
+
+.groupTitle {
+  padding: 0 16px;
+  color: var(--label-secondary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.group {
+  display: grid;
+  border-radius: var(--radius-group);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  overflow: hidden;
+}
+
+.group > * + * {
+  border-top: 0.5px solid var(--separator);
+}
+
+.group > .error {
+  border-top: 0;
+}
+
+.historyValue {
+  color: var(--label-secondary);
+  font-size: 0.9375rem;
+  white-space: nowrap;
+}
+
+.hint {
+  padding: 0 16px 4px;
+  color: var(--label-secondary);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 12px;
+}
+
+.fieldLogo {
+  --logo-size: 40px;
+}
+
+.nameInput {
+  flex: 1;
+  min-width: 0;
+  min-height: 60px;
+  padding: 0 16px 0 0;
+  border: 0;
+  background: transparent;
+  font-size: 1.1875rem;
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 6px 16px;
+}
+
+.rowLabel {
+  flex: none;
+  font-size: 1.0625rem;
+}
+
+.rowControl {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.inlineInput {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--label);
+  font-size: 1.0625rem;
+  text-align: right;
+}
+
+.nameInput::placeholder,
+.inlineInput::placeholder,
+.notes::placeholder {
+  color: var(--label-tertiary);
+}
+
+/* Фокус поля — синяя полоса у края строки: обводка вокруг текста налезала бы на ошибку. */
+.nameInput:focus-visible,
+.inlineInput:focus-visible,
+.notes:focus-visible,
+.select:focus-visible {
+  outline: none;
+}
+
+.field:has(:focus-visible),
+.row:has(input:focus-visible, select:focus-visible),
+.group:has(> .notes:focus-visible) {
+  box-shadow: inset 4px 0 0 var(--focus);
+}
+
+.nameInput[aria-invalid='true'],
+.inlineInput[aria-invalid='true'] {
+  color: var(--text-red);
+}
+
+.dateInput {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: auto;
+  min-width: 9.5em;
+  color-scheme: light dark;
+}
+
+.dateInput::-webkit-date-and-time-value {
+  text-align: right;
+}
+
+/* Дата с кнопкой очистки: крестик появляется, когда дата задана. */
+.dateRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.clearDate {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--fill);
+  color: var(--label-secondary);
+  transition: transform 0.18s var(--ease-out);
+}
+
+.clearDate svg {
+  width: 13px;
+  height: 13px;
+}
+
+.clearDate:active {
+  transform: scale(0.9);
+}
+
+.selectWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  color: var(--label-secondary);
+}
+
+.select {
+  -webkit-appearance: none;
+  appearance: none;
+  max-width: 100%;
+  min-height: 40px;
+  padding: 0 26px 0 0;
+  border: 0;
+  background: transparent;
+  color: var(--label);
+  font-size: 1.0625rem;
+  text-align: right;
+  text-align-last: right;
+}
+
+.selectWrap svg {
+  position: absolute;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+.currency {
+  width: min(100%, 188px);
+}
+
+.status {
+  width: min(100%, 260px);
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 16px 12px;
+}
+
+.suggestions :global(.chip) {
+  min-height: 34px;
+  font-size: 0.875rem;
+}
+
+.notes {
+  width: 100%;
+  min-height: 96px;
+  padding: 14px 16px;
+  border: 0;
+  background: transparent;
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  resize: vertical;
+}
+
+.error {
+  padding: 0 16px 12px;
+  color: var(--text-red);
+  font-size: 0.8125rem;
+}
+
+/* Готовые сервисы: ряд с переносом, чтобы был виден весь список. */
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preset {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 4px 14px 4px 6px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--label);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: transform 0.18s var(--ease-out);
+}
+
+.preset:active {
+  transform: scale(0.95);
+}
+
+.presetLogo {
+  --logo-size: 30px;
+}
+
+.presetName {
+  white-space: nowrap;
+}
+
+.logoActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 16px 12px;
+}
+
+.logoActions :global(.chip) {
+  min-height: 34px;
+  font-size: 0.875rem;
+}
+
+.logoButton {
+  cursor: pointer;
+}
+
+.logoButton:has(:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 16px;
+  border: 0;
+  background: transparent;
+  color: var(--label);
+  font-size: 1.0625rem;
+  text-align: left;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.action:active {
+  background: var(--fill);
+}
+
+.action:focus-visible {
+  outline-offset: -3px;
+}
+
+.action svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--label-secondary);
+}
+
+.actionText {
+  display: grid;
+  gap: 2px;
+}
+
+.actionHint {
+  color: var(--label-secondary);
+  font-size: 0.8125rem;
+}
+
+.destructive,
+.destructive svg {
+  color: var(--text-red);
+}
+
+@media (max-width: 380px) {
+  .row {
+    gap: 8px;
+  }
+
+  .rowLabel {
+    font-size: 1rem;
+  }
+}

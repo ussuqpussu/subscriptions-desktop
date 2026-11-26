@@ -1,0 +1,72 @@
+.summary {
+  display: grid;
+  gap: 8px;
+  padding: 16px 20px 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 32px;
+}
+
+.title {
+  color: var(--label-secondary);
+  font-family: var(--font-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.eye {
+  width: 36px;
+  height: 36px;
+  margin-right: -8px;
+}
+
+.eye svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Крупная сумма — скруглённый SF Pro Rounded. */
+.total {
+  font-family: var(--font-rounded);
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+/* Годовая сумма — полупрозрачной строкой под месячной. */
+.yearly {
+  color: var(--label-secondary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.empty {
+  padding: 4px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.note {
+  color: var(--label-secondary);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.overdue {
+  color: var(--text-red);
+}

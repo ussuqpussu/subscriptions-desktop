@@ -1,0 +1,247 @@
+.row {
+  --lamp-text: var(--text-green);
+  --tile-size: 44px;
+  --text-start: calc(16px + var(--tile-size) + 12px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Содержимое строки уезжает влево и открывает кнопку удаления справа. */
+.content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  background: var(--surface);
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.content[data-revealed='delete'] {
+  transform: translateX(-80px);
+}
+
+.content[data-revealed='paid'] {
+  transform: translateX(80px);
+}
+
+.deleteAction {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* Иконка по центру открытой полосы шириной 80px. */
+  padding: 0 28px 0 0;
+  border: 0;
+  background: var(--red);
+  color: var(--on-red);
+  /* Спрятана, пока строку не тянут: иначе красный край просвечивает сквозь сглаживание. */
+  opacity: 0;
+}
+
+.row:has(> .content[data-direction='delete'], > .content[data-revealed='delete']) .deleteAction,
+.row:has(> .content[data-direction='paid'], > .content[data-revealed='paid']) .payAction {
+  opacity: 1;
+}
+
+.payAction {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* Иконка по центру открытой полосы шириной 80px. */
+  padding: 0 0 0 28px;
+  border: 0;
+  background: var(--green);
+  color: var(--on-green);
+  opacity: 0;
+}
+
+.deleteAction svg,
+.payAction svg {
+  width: 24px;
+  height: 24px;
+}
+
+.row[data-lamp='yellow'] {
+  --lamp-text: var(--text-yellow);
+}
+
+.row[data-lamp='red'] {
+  --lamp-text: var(--text-red);
+}
+
+.row[data-lamp='off'] {
+  --lamp-text: var(--text-off);
+}
+
+/* Разделитель начинается от текста, как в списках iOS. */
+.row + .row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--text-start);
+  right: 0;
+  z-index: 2;
+  height: 1px;
+  background: var(--separator);
+}
+
+.main {
+  display: grid;
+  grid-template-columns: var(--tile-size) minmax(0, 1fr) auto;
+  column-gap: 12px;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 4px 12px 16px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.main:active {
+  background: var(--fill);
+}
+
+.main:focus-visible {
+  outline-offset: -3px;
+  border-radius: var(--radius-card);
+}
+
+.tile {
+  --logo-size: var(--tile-size);
+}
+
+.row[data-lamp='off'] .tile {
+  color: var(--label-secondary);
+  opacity: 0.6;
+}
+
+.text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 22px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Длинный срок («просрочено на 12 дней») переносится, лампочка остаётся у первой строки. */
+.due {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+  font-size: 0.8125rem;
+  line-height: 18px;
+}
+
+.due > :first-child {
+  margin-top: 4px;
+}
+
+.dueText {
+  min-width: 0;
+  color: var(--lamp-text);
+  font-weight: 600;
+}
+
+.row[data-lamp='green'] .dueText {
+  font-weight: 500;
+}
+
+.meta {
+  overflow: hidden;
+  color: var(--label-secondary);
+  font-size: 0.8125rem;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.money {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  text-align: right;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
+.row[data-lamp='off'] .price {
+  color: var(--label-secondary);
+}
+
+.period {
+  color: var(--label-secondary);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.export {
+  margin-right: 6px;
+}
+
+.payRow {
+  grid-column: 1 / -1;
+  padding: 0 16px 14px var(--text-start);
+  margin-top: -4px;
+}
+
+.pay {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 16px 0 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  color: var(--label);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.pay svg {
+  width: 17px;
+  height: 17px;
+  color: var(--lamp-text);
+}
+
+.pay:active {
+  transform: scale(1.05);
+}
+
+@media (max-width: 380px) {
+  .row {
+    --tile-size: 40px;
+    --text-start: calc(12px + var(--tile-size) + 10px);
+  }
+
+  .main {
+    column-gap: 10px;
+    padding-left: 12px;
+  }
+
+  .export {
+    margin-right: 0;
+  }
+}

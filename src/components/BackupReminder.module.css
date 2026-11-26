@@ -1,0 +1,35 @@
+.reminder {
+  display: grid;
+  gap: 8px;
+  padding: 16px 20px 18px;
+}
+
+.title {
+  font-family: var(--font-text);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.text {
+  color: var(--label-secondary);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.actions :global(.button) {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 0.875rem;
+}
+
+.actions :global(.button) svg {
+  width: 18px;
+  height: 18px;
+}
