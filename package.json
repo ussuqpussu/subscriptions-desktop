@@ -43,7 +43,7 @@
   "build": {
     "appId": "ru.subscriptions.desktop",
     "productName": "Подписки",
-    "artifactName": "Podpiski-Setup-${version}.${ext}",
+    "artifactName": "Podpiski-Setup.${ext}",
     "files": [
       "dist/**",
       "electron/**",

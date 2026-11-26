@@ -2,6 +2,9 @@ name: Сборка .exe для Windows
 on:
   push:
     tags: ['v*']
+  # Релиз, созданный на сайте GitHub, тоже запускает сборку и получает .exe.
+  release:
+    types: [published]
   workflow_dispatch:
 permissions:
   contents: write
@@ -20,7 +23,7 @@ jobs:
         with: { name: Podpiski-Setup, path: release/*.exe }
       - if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
-        with: { files: release/*.exe }
+        with: { files: 'release/Podpiski*Setup.exe' }
 
   build-win7:
     runs-on: windows-latest
@@ -34,9 +37,9 @@ jobs:
       - run: npm run build
         env: { VITE_TARGET: chrome108 }
       - shell: bash
-        run: npx electron-builder --win --publish never --config.electronVersion=22.3.27 '--config.artifactName=Podpiski-Win7-Setup-${version}.${ext}'
+        run: npx electron-builder --win --publish never --config.electronVersion=22.3.27 '--config.artifactName=Podpiski-Win7-Setup.${ext}'
       - uses: actions/upload-artifact@v4
         with: { name: Podpiski-Win7-Setup, path: release/*.exe }
       - if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
-        with: { files: release/*.exe }
+        with: { files: 'release/Podpiski*Setup.exe' }
